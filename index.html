@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orion Return Portal - Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 40px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #0073bb; }
+        label { display: block; margin-top: 14px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        .button-row { margin-top: 20px; }
+        button { padding: 10px 20px; margin-right: 10px; background: #0073bb; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005fa3; }
+        .order-details { margin-top: 20px; background: #eef6fb; padding: 15px; border-radius: 5px; display: none; }
+        .shipping-link { margin-top: 10px; display: none; }
+    </style>
+    <script>
+        function lookupOrder() {
+            const orderId = document.getElementById('orderId').value.trim();
+            const orderData = {
+                "123456": {
+                    item: "Noise-Canceling Headphones",
+                    date: "March 10, 2024",
+                    price: "$179.99",
+                    status: "Delivered",
+                    trackingUrl: "https://shipping.fakecarrier.com/track/123456"
+                },
+                "987654": {
+                    item: "Smartwatch Series 6",
+                    date: "February 25, 2024",
+                    price: "$249.99",
+                    status: "Shipped",
+                    trackingUrl: "https://shipping.fakecarrier.com/track/987654"
+                },
+                "555888": {
+                    item: "4K Streaming Stick",
+                    date: "March 5, 2024",
+                    price: "$49.99",
+                    status: "Out for Delivery",
+                    trackingUrl: "https://shipping.fakecarrier.com/track/555888"
+                }
+            };
+
+            const detailsDiv = document.getElementById('orderDetails');
+            const shippingLink = document.getElementById('shippingLink');
+            if (orderData[orderId]) {
+                const order = orderData[orderId];
+                detailsDiv.style.display = 'block';
+                detailsDiv.innerHTML = `<strong>Item:</strong> ${order.item}<br>
+                                        <strong>Date:</strong> ${order.date}<br>
+                                        <strong>Price:</strong> ${order.price}<br>
+                                        <strong>Status:</strong> ${order.status}`;
+                shippingLink.href = order.trackingUrl;
+                shippingLink.style.display = 'inline-block';
+            } else {
+                detailsDiv.style.display = 'block';
+                detailsDiv.innerHTML = "No order found for this ID.";
+                shippingLink.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Orion Return Portal (Demo)</h1>
+
+        <label for="orderId">Order ID</label>
+        <input type="text" id="orderId" required>
+        <button onclick="lookupOrder()">Look Up Order</button>
+
+        <div id="orderDetails" class="order-details"></div>
+        <a id="shippingLink" class="shipping-link" href="#" target="_blank">Open Shipping Tracker</a>
+
+        <label for="email">Customer Email</label>
+        <input type="email" id="email">
+
+        <label for="sfid">Salesforce Contact ID</label>
+        <input type="text" id="sfid">
+
+        <label for="accountId">Account ID</label>
+        <input type="text" id="accountId">
+
+        <label for="reason">Return Reason</label>
+        <select id="reason">
+            <option value="damaged">Item arrived damaged</option>
+            <option value="wrong">Wrong item delivered</option>
+            <option value="unwanted">Unwanted item</option>
+            <option value="other">Other</option>
+        </select>
+
+        <label for="notes">Additional Notes</label>
+        <textarea id="notes" rows="3"></textarea>
+
+        <label>Customer mentioned defect?</label>
+        <input type="checkbox" id="defectMentioned"> Yes
+
+        <label>Return Method</label>
+        <input type="radio" name="returnMethod" value="mail"> Mail-in
+        <input type="radio" name="returnMethod" value="store"> In-store
+        <input type="radio" name="returnMethod" value="dropoff"> Drop-off
+
+        <label for="destination">Return Destination</label>
+        <select id="destination">
+            <option value="a">Warehouse A</option>
+            <option value="b">Warehouse B</option>
+            <option value="c">Warehouse C</option>
+        </select>
+
+        <div class="button-row">
+            <button type="submit">Submit Return Request</button>
+            <button type="button" onclick="alert('Escalation sent to Supervisor')">Escalate to Supervisor</button>
+        </div>
+    </div>
+</body>
+</html>
